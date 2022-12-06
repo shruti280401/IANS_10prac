@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The one-time pad (OTP) is a theoretically unbreakable cipher. However, in practice it is of limited usability because it requires a pre-shared key of at least the same length as the message. This tool helps you encode or decode one-time pads if you have the key.">
+    <meta name="author" content="Johan Åhlén">
+    <title>One-Time Pad (OTP) Decoder and Encoder | Boxentriq</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://browser.sentry-cdn.com/5.27.2/bundle.tracing.min.js" integrity="sha384-rpbR8aO7ZS39FLWobN304qdytlzvMSYnMFEJgiCC2dUEWmaD1W9bSWfy20JHFU6Q" crossorigin="anonymous"></script>
+    <script src="/script/lazysizes.min.js" async=""></script> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya:Alegreya:500,500i,700">
+    <link rel="icon" href="https://www.boxentriq.com/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://www.boxentriq.com/code-breaking/one-time-pad" />
+    <meta property="og:url" content="https://www.boxentriq.com/code-breaking/one-time-pad" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="One-Time Pad (OTP) Decoder and Encoder | Boxentriq" />
+    <meta property="og:description" content="The one-time pad (OTP) is a theoretically unbreakable cipher. However, in practice it is of limited usability because it requires a pre-shared key of at least the same length as the message. This tool helps you encode or decode one-time pads if you have the key." />
+    <meta property="og:image" content="https://www.boxentriq.com/Img/hacker-boxentriq-facebook-preview.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@boxentriq" />
+    <meta name="twitter:creator" content="@boxentriq" />
+    <meta name="twitter:app:country" content="US" />
+    <meta name="twitter:app:name:iphone" content="Boxentriq - The Initiation" />
+    <meta name="twitter:app:id:iphone" content="1373876294" />
+    <meta name="twitter:app:name:ipad" content="Boxentriq - The Initiation" />
+    <meta name="twitter:app:id:ipad" content="1373876294" />
+    <meta name="twitter:app:name:googleplay" content="Boxentriq" />
+    <meta name="twitter:app:id:googleplay" content="com.boxentriq.android" />
+    
+    <style>
+        .bookmark-small::before,.bookmark::before{display:block;content:"";visibility:hidden;pointer-events:none}a.text-decoration-none:hover,span.spoiler{text-decoration:none}.h1,.h2,.h3,.h4,.h5,.h6,body,h1,h2,h3,h4,h5,h6,html{font-family:Alegreya,Helvetica,Arial,sans-serif;text-rendering:optimizeLegibility}body{padding-bottom:0;font-size:1em;background:#f0f0f0;display:flex;min-height:100vh;flex-direction:column}header{padding:20px 0}section{padding:2em 0 1.5em}section.nopadding{padding:1em 0 0}.screenshot{width:200px;height:370px;margin:10px 20px}.footer{padding-top:1rem;padding-bottom:1rem;background:#000}.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6{font-weight:700}a.footer-link,a.footer-link:hover{color:#fff}.text-highlight,a.text-link{color:#ffffff}a.greentext-link{color:rgb(149, 73, 162)}a.inherit-link,a.inherit-link:hover{color:inherit;text-decoration:none}.nopadding{padding:0}.appstore{width:160px;height:47px;margin:10px 0}.hacker{width:500px}.logo{width:400px;height:66px;margin:0 0 20px}.hacker-small{width:200px;margin:20px 0 0}.logo-small{width:200px;margin:0 0 20px}.content,.video{bottom:0;width:100%}img.alphabet-symbol{cursor:pointer;margin:5px}.bg-footer,.bg-navbar{background-color:#000}.section1{background-color: #5c65e9;;color:#ffff}.section2{background-color:#156315;color:#fff}.section3{background-color:#f0f0f0;color:#000}.section4{background-color:#004000;color:#fff}.darkbackground{background-color:#151515}.video{right:0}.content{position:fixed;background:rgba(0,0,0,.5);color:#f1f1f1;padding:20px}.body-content{padding-left:15px;padding-right:15px}.dl-horizontal dt{white-space:normal}input.max-width-480,select.max-width-480,textarea.max-width-480 .max-width-480{max-width:480px}p.help-block{color:red}span.spoiler{color:#ccc;background:#222;display:inline-block;padding-left:.5em;padding-right:.5em;cursor:pointer}.list-item{font-size:1.2em}ul.linklist{position:relative;list-style:none;margin-left:0;margin-top:0;margin-bottom:0;padding-left:1.5em}ul.linklist li:before{content:'\1F517';position:absolute;left:0}.badge{font-weight:400}.bookmark::before{margin-top:-80px;height:80px}.bookmark-small::before{margin-top:-50px;height:50px}.extra-top-margin{margin-top:1.2em}div.crypto-tool-letter{display:inline-block;margin:.1em;line-height:1.1em;text-align:center;cursor:pointer}div.crypto-tool-letter.selected{background-color:#ff0}input.crypto-tool-letter-input{width:1.6em;text-align:center;padding-left:0;padding-right:0}.redbackground{background:#f77}.noselect{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}@media (min-width:768px) and (max-width:991px){.carousel-inner .active.col-md-4.carousel-item+.carousel-item+.carousel-item+.carousel-item{position:absolute;top:0;right:-33.3333%;z-index:-1;display:block;visibility:visible}}@media (min-width:576px) and (max-width:768px){.carousel-inner .active.col-sm-6.carousel-item+.carousel-item+.carousel-item{position:absolute;top:0;right:-50%;z-index:-1;display:block;visibility:visible}}@media (min-width:576px){.carousel-item{margin-right:0}.carousel-inner .active+.carousel-item{display:block}.carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),.carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left)+.carousel-item{transition:none}.carousel-inner .carousel-item-next{position:relative;transform:translate3d(0,0,0)}.active.carousel-item-left+.carousel-item-next.carousel-item-left,.carousel-item-next.carousel-item-left+.carousel-item,.carousel-item-next.carousel-item-left+.carousel-item+.carousel-item{position:relative;transform:translate3d(-100%,0,0);visibility:visible}.carousel-inner .carousel-item-prev.carousel-item-right{position:absolute;top:0;left:0;z-index:-1;display:block;visibility:visible}.active.carousel-item-right+.carousel-item-prev.carousel-item-right,.carousel-item-prev.carousel-item-right+.carousel-item,.carousel-item-prev.carousel-item-right+.carousel-item+.carousel-item{position:relative;transform:translate3d(100%,0,0);display:block;visibility:visible}}@media (min-width:768px){.carousel-inner .active+.carousel-item+.carousel-item{display:block}.carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left)+.carousel-item+.carousel-item{transition:none}.carousel-inner .carousel-item-next{position:relative;transform:translate3d(0,0,0)}.carousel-item-next.carousel-item-left+.carousel-item+.carousel-item+.carousel-item{position:relative;transform:translate3d(-100%,0,0);visibility:visible}.carousel-item-prev.carousel-item-right+.carousel-item+.carousel-item+.carousel-item{position:relative;transform:translate3d(100%,0,0);display:block;visibility:visible}.carousel{max-width:860px}.carousel-inner{max-width:740px}}.carousel-control-next,.carousel-control-prev{height:20%;top:40%}div.toolsSearch{position:relative;display:inline-block;width:300px}input.toolsSearch{width:100%;padding-left:.5em;padding-right:.5em}.toolsSearch-items{position:absolute;border:1px solid #d4d4d4;border-bottom:none;border-top:none;z-index:99;top:100%;left:0;right:0;text-align:left}.toolsSearch-items div{padding:10px;cursor:pointer;background-color:#fff;color:#000;border-bottom:1px solid #d4d4d4}.toolsSearch-items div:hover{background-color:#e9e9e9}.toolsSearch-active{background-color:#1e90ff!important;color:#fff}
+            </style>
+
+    <style>
+        #ENCRYPT{
+            background-color: #5c65e9
+        }
+        #DECRYPT{
+            background-color: #5c65e9
+        
+        }
+    </style>
+
+    <!-- Begin Google Tag Manager -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MQKPXTR');</script>
+    <!-- End Google Tag Manager -->
+    
+        <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.boxentriq.com/" }
+,{"@type": "ListItem", "position": 2, "name": "code-breaking", "item": "https://www.boxentriq.com/code-breaking" }
+,{"@type": "ListItem", "position": 3, "name": "one-time pad", "item": "https://www.boxentriq.com/code-breaking/one-time-pad" }
+]}
+</script>
+
+            <script type="text/javascript" src="//cdn.thisiswaldo.com/static/js/8921.js"></script>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQKPXTR"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar bg-navbar sticky-top" id="mainNav">
+        <div class="container">
+            <!-- <a class="navbar-brand js-scroll-trigger" href="/"><img src="/img/boxentriq-242x40.png" style="width: 242px;height: 40px;" alt="Boxentriq logo" title="Boxentriq" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Aim.html">Aim</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Theory.html">Theory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="procedure.html">Procedure</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="simulator.html">Simulator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Cryptanalysis.html">Cryptanalysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="assignment.html">Assignment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aboutus.html">About us</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+    </div>
+</nav>      
+
+<center>
+
+    <main style="flex: 1;">
+
+        <header class="section1">
+            <div class="container">
+                <h1>One-Time Pad (OTP) Algorithm</h1>
+            </div>
+        </header>
+        <br>
+
+
+            <h3><u>SIMULATOR</u></h3>
+            <hr />
+            <br />
+            <br />
+            <p>&nbsp&nbsp&nbsp<b>Plaintext=</b>
+                <textarea cols="25" id="p" name="p" rows="1" autocomplete="on" ></textarea>
+                
+            </p>
+            <p>&nbsp&nbsp&nbsp&nbsp<b>Keyword=</b>
+                <input id="key" maxchars="25" name="key" size="22.5" type="text" value="" autocomplete="on" />
+            </p>
+            <p>
+                
+                <!-- &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp -->
+                <input name="btnEn" onclick="Vernam_Encrypt()" type="button" value="ENCRYPT" id="ENCRYPT"/>
+                 <!-- <input class="btn1" name="btnEn" onclick="Vernam_Encrypt()" type="button"
+                        value="ENECRYPT" /><br /> -->
+                
+                    <input class="btn2" name="btnDe" onclick="Vernam_Decrypt()" type="button" value="DECRYPT" id="DECRYPT" />
+               
+            </p>
+            <br />
+            <p>&nbsp&nbsp&nbsp&nbsp&nbsp<b>Ciphertext=</b>
+                <textarea cols="25" id="c" name="c" rows="1"></textarea>
+                <br />
+            </p>
+            <br />
+            
+        </div>
+ 
+    </center>
+
+    
+        
+        <br />
+    
+
+    
+
+    <!-- Add JS at the bottom of HTML file -->
+    <script src="simulator.js"></script>
+    
+
+</html>
